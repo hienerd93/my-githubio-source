@@ -14,18 +14,20 @@ const parseDataFromApi = pipe(
   (value: string[]) => chunk(value, 6)
 );
 
-const publicSheetUrl =
-  "https://docs.google.com/spreadsheets/d/e/2PACX-1vSesyDPxMF06ZQC5dAwofNMCEJhjun0WgNm9HwC_TyBWWKfngkrT3x1CUwvbgGvblMhBnaciPH24rXJ/pubhtml?gid=612561317&single=true";
 const fetcher = (url: string) => fetch(url).then((res) => res.text());
 
 function App() {
-  const { data, error, isLoading } = useSWR(publicSheetUrl, fetcher);
+  const { data, error, isLoading } = useSWR(
+    import.meta.env.VITE_PUBLIC_SHEET_URL,
+    fetcher
+  );
   const [number, setNumber] = useState(-1);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const handleRandom = () => {
     const num = Math.floor(Math.random() * 100) + 1;
-    audioRef.current = new Audio(`./${num * 10 + 1}-${(num + 1) * 10}.mp3`);
+    const audioUrl = import.meta.env.VITE_DROPBOX_URL.split(",")[0];
+    audioRef.current = new Audio(audioUrl);
     audioRef.current.play();
     setNumber(num);
   };
