@@ -44,7 +44,9 @@ function App() {
   return (
     <>
       <TypographyH1>List 1000 common words</TypographyH1>
-      <Button onClick={handleRandom}>Random</Button>
+      <Button onClick={handleRandom} disabled={number > -1}>
+        Random
+      </Button>
       <Button onClick={handleReset}>Reset</Button>
       <div className="grid gap-4 grid-cols-3 p-20">
         {React.Children.toArray(
