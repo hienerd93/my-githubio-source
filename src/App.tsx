@@ -44,6 +44,10 @@ function App() {
     setNumber(-1);
   };
 
+  const handleReplay = () => {
+    audioRef.current?.play();
+  };
+
   const getData = (text: string) => {
     fetchAndSetAll([
       {
@@ -76,6 +80,7 @@ function App() {
             Random
           </Button>
           <Button onClick={handleReset}>Reset</Button>
+          <Button onClick={handleReplay}>Replay</Button>
           <div className="grid gap-4 grid-cols-3 p-20">
             {React.Children.toArray(
               randomWordList.map((item) => <LexisCard cardContent={item} />)
