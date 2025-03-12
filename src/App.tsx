@@ -29,8 +29,11 @@ function App() {
   const [number, setNumber] = useState(-1);
   const [text, setText] = useState("");
   const [editor, setEditor] = useState("");
+  const [hashVideo, setHashVideo] = useState("");
+  const [heightVideo, setHeightVideo] = useState(480);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   const handleRandom = () => {
     const num = Math.floor(Math.random() * 100) + 1;
@@ -74,6 +77,7 @@ function App() {
         <TabsList>
           <TabsTrigger value="english">english</TabsTrigger>
           <TabsTrigger value="solve-problem">solve problem</TabsTrigger>
+          <TabsTrigger value="shadowing">shadowing</TabsTrigger>
         </TabsList>
         <TabsContent value="english">
           <Typography
@@ -110,6 +114,49 @@ function App() {
             />
             <pre className="rounded-xl p-4 text-white bg-black">{editor}</pre>
           </div>
+        </TabsContent>
+        <TabsContent value="shadowing">
+          <input className="border-black border" ref={inputRef} />
+          <button
+            type="button"
+            onClick={() => setHashVideo(inputRef.current?.value || "")}
+          >
+            submit
+          </button>
+          {hashVideo && (
+            <>
+              <div style={{ height: heightVideo, overflow: "hidden" }}>
+                <iframe
+                  src={`https://www.youtube.com/embed/${hashVideo}`}
+                  allow="autoplay; encrypted-media"
+                  title="video"
+                  width={853}
+                  height={480}
+                />
+              </div>
+              <button
+                className="border-black border m-4"
+                type="button"
+                onClick={() => setHeightVideo(480)}
+              >
+                both sub
+              </button>
+              <button
+                className="border-black border m-4"
+                type="button"
+                onClick={() => setHeightVideo(400)}
+              >
+                eng sub
+              </button>
+              <button
+                className="border-black border m-4"
+                type="button"
+                onClick={() => setHeightVideo(340)}
+              >
+                no sub
+              </button>
+            </>
+          )}
         </TabsContent>
       </Tabs>
     </>
