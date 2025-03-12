@@ -14,6 +14,7 @@ const regex =
 const baseUrl = import.meta.env.VITE_GITHUB_URL;
 
 const parseDataFromApi = pipe(
+  (value: string) => value.replace(/&#39;/g, '"'),
   (value: string) => value.match(regex),
   (value: string[]) => chunk(value, 6)
 );
@@ -91,7 +92,9 @@ function App() {
           <div className="grid gap-4 grid-cols-3 p-20">
             {React.Children.toArray(
               buttons.map((item) => (
-                <Button onClick={() => getData(item)}>{item}</Button>
+                <Button onClick={() => getData(item)}>
+                  {item.split("/").at(-1)}
+                </Button>
               ))
             )}
           </div>
