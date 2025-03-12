@@ -6,7 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { TypographyP } from "../ui/typography";
+import { Typography } from "../ui/typography";
 
 interface Props {
   cardContent: string[];
@@ -26,7 +26,7 @@ const LexisCard = ({
             <CardDescription>{ipa}</CardDescription>
           </CardHeader>
           <CardContent>
-            <TypographyP>{example}</TypographyP>
+            <Typography>{example}</Typography>
           </CardContent>
           <CardFooter></CardFooter>
         </Card>
@@ -38,7 +38,7 @@ const LexisCard = ({
             <CardDescription>{ipa}</CardDescription>
           </CardHeader>
           <CardContent>
-            <TypographyP>{exampleVnTrans}</TypographyP>
+            <Typography>{exampleVnTrans}</Typography>
           </CardContent>
           <CardFooter></CardFooter>
         </Card>

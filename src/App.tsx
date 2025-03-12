@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { TypographyH1 } from "@/components/ui/typography";
+import { Typography } from "@/components/ui/typography";
 import useSWR from "swr";
 import { pipe } from "./lib/utils";
 import { chunk } from "lodash";
@@ -76,7 +76,12 @@ function App() {
           <TabsTrigger value="solve-problem">solve problem</TabsTrigger>
         </TabsList>
         <TabsContent value="english">
-          <TypographyH1>List 1000 common words</TypographyH1>
+          <Typography
+            as="h1"
+            className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl"
+          >
+            List 1000 common words
+          </Typography>
           <Button onClick={handleRandom} disabled={number > -1}>
             Random
           </Button>
