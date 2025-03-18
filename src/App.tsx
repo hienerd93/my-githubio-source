@@ -14,9 +14,9 @@ const regex =
 const baseUrl = import.meta.env.VITE_GITHUB_URL;
 
 const parseDataFromApi = pipe(
-  (value: string) => value.replace(/&#39;/g, '"'),
-  (value: string) => value.match(regex),
-  (value: string[]) => chunk(value, 6)
+  (value: string) => value.replace(/&#39;/g, "'").replace("&quot;", '"'),
+  (value: string) => value.split("</table"),
+  (value: string[]) => value.map((v) => v.match(regex))
 );
 
 const fetcher = (url: string) => fetch(url).then((res) => res.text());
@@ -30,10 +30,8 @@ function App() {
   const [text, setText] = useState("");
   const [editor, setEditor] = useState("");
   const [hashVideo, setHashVideo] = useState("");
-  const [heightVideo, setHeightVideo] = useState(480);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const inputRef = useRef<HTMLInputElement | null>(null);
 
   const handleRandom = () => {
     const num = Math.floor(Math.random() * 100) + 1;
@@ -65,8 +63,10 @@ function App() {
     ]).catch(console.error);
   };
 
-  const wordList: string[][] =
+  const [wordListRaw, , postcardRaw] =
     !error && !isLoading && data ? parseDataFromApi(data) : [];
+  const wordList: string[][] = chunk(wordListRaw, 6);
+  const postCard: string[][] = chunk(postcardRaw, 4);
 
   const randomWordList =
     number === -1 ? wordList : wordList.slice(number * 10, (number + 1) * 10);
@@ -116,46 +116,21 @@ function App() {
           </div>
         </TabsContent>
         <TabsContent value="shadowing">
-          <input className="border-black border" ref={inputRef} />
-          <button
-            type="button"
-            onClick={() => setHashVideo(inputRef.current?.value || "")}
-          >
-            submit
-          </button>
+          {React.Children.toArray(
+            postCard
+              .slice(1)
+              .map((item) => (
+                <Button onClick={() => setHashVideo(item[2])}>{item[1]}</Button>
+              ))
+          )}
           {hashVideo && (
-            <>
-              <div style={{ height: heightVideo, overflow: "hidden" }}>
-                <iframe
-                  src={`https://www.youtube.com/embed/${hashVideo}`}
-                  allow="autoplay; encrypted-media"
-                  title="video"
-                  width={853}
-                  height={480}
-                />
-              </div>
-              <button
-                className="border-black border m-4"
-                type="button"
-                onClick={() => setHeightVideo(480)}
-              >
-                both sub
-              </button>
-              <button
-                className="border-black border m-4"
-                type="button"
-                onClick={() => setHeightVideo(400)}
-              >
-                eng sub
-              </button>
-              <button
-                className="border-black border m-4"
-                type="button"
-                onClick={() => setHeightVideo(340)}
-              >
-                no sub
-              </button>
-            </>
+            <iframe
+              src={`https://www.youtube.com/embed/${hashVideo}`}
+              allow="autoplay; encrypted-media"
+              title="video"
+              width={853}
+              height={480}
+            />
           )}
         </TabsContent>
       </Tabs>
