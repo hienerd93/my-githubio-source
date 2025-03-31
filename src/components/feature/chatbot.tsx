@@ -71,7 +71,7 @@ export function Chatbot({ onAccept }: { onAccept: () => void }) {
           </div>
           <div
             className="pr-4 h-[474px]"
-            style={{ minWidth: "100%", display: "table" }}
+            style={{ minWidth: "100%", overflow: "auto" }}
           >
             {React.Children.toArray(
               chatHistory.map((chatLine, index) => (

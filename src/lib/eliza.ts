@@ -3,7 +3,10 @@ import { elizaKeywords, genericResponses } from "./keywords";
 export class Eliza {
   script: Map<string, KeywordData> = new Map();
   constructor(keywordData: [string, number, [string, string[]][]][] | null) {
-    if (!keywordData) keywordData = elizaKeywords;
+    if (!keywordData) {
+      keywordData = elizaKeywords;
+    }
+
     this.buildScript(keywordData);
   }
   buildScript(data: [string, number, [string, string[]][]][]): void {
@@ -24,10 +27,13 @@ export class Eliza {
   getResponse(input: string): string {
     input = this.sanatize(input);
     const decompositionRules: Rule[] = this.getDecompositionRules(input);
-    if (decompositionRules == null)
+
+    if (decompositionRules.length === 0) {
       return genericResponses[
         this.randomNumIncl(0, genericResponses.length - 1)
       ];
+    }
+
     const decompositionRule = this.getDecompositionRule(
       input,
       decompositionRules
@@ -36,10 +42,13 @@ export class Eliza {
       input,
       decompositionRule
     );
-    if (reassemblyRule == null)
+
+    if (!reassemblyRule) {
       return genericResponses[
         this.randomNumIncl(0, genericResponses.length - 1)
       ];
+    }
+
     return this.reassemble(
       input,
       reassemblyRule,
@@ -89,7 +98,9 @@ export class Eliza {
   reassemble(input: string, reassembRule: string, decompRule: string): string {
     // find number (n) in reassemb rule
     const match: RegExpExecArray | null = /\([0-9]\)/g.exec(reassembRule);
-    if (match == null) return reassembRule;
+    if (match == null) {
+      return reassembRule;
+    }
 
     const wordNum: number = Number(match[0][1]);
 
